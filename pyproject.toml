@@ -1,0 +1,26 @@
+[project]
+name = "nondb"
+version = "0.1.0"
+description = "A document store for Pydantic models"
+authors = [
+    {name = "slank",email = "slank@smacky.org"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jmespath>=1.0.1",
+    "pydantic>=2.11.7",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel",
+    "black",
+    "coverage",
+    "mypy",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
