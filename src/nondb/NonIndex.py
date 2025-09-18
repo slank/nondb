@@ -24,7 +24,7 @@ class IIndexed[T](ABC):
     def all(self) -> list[T]: ...
 
 
-class NoIndex[T: BaseModel]:
+class NonIndex[T: BaseModel]:
     def __init__(self, table: IIndexed, schema: type[T], index_expr: str) -> None:
         self.table = table
         self.schema = schema

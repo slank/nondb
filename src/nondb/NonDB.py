@@ -2,20 +2,20 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-from .NoTable import NoTable
+from .NonTable import NonTable
 from .Storage import Storage
 
 
-class NoDB:
+class NonDB:
     def __init__(self, path: str) -> None:
         self.storage = Storage(Path(path))
         self.tables = {}
 
-    def table(self, schema: type[BaseModel], key_expr: str = "id") -> NoTable:
+    def table(self, schema: type[BaseModel], key_expr: str = "id") -> NonTable:
         """Get or create a table for the given schema."""
         table_name = schema.__name__
         if table_name not in self.tables.keys():
-            self.tables[table_name] = NoTable(self.storage, schema, key_expr)
+            self.tables[table_name] = NonTable(self.storage, schema, key_expr)
         return self.tables[table_name]
 
     def drop(self, schema: type[BaseModel], raiseOnMissing: bool = False) -> None:

@@ -1,16 +1,16 @@
 import jmespath
 from pydantic import BaseModel
 
-from .NoIndex import IIndexed, NoIndex
+from .NonIndex import IIndexed, NonIndex
 from .Storage import Storage
 
 
-class NoTable[T: BaseModel](IIndexed[T]):
+class NonTable[T: BaseModel](IIndexed[T]):
     def __init__(self, db_storage: Storage, schema: type[T], key_expr: str):
         self.db_storage = db_storage
         self._schema = schema
         self._jmespath = jmespath.compile(key_expr)
-        self._indices: dict[str, NoIndex] = {}
+        self._indices: dict[str, NonIndex] = {}
 
     @property
     def schema(self) -> type[T]:
@@ -51,9 +51,9 @@ class NoTable[T: BaseModel](IIndexed[T]):
         for index in self._indices.values():
             index.delete(record)
 
-    def index(self, index_expr: str) -> "NoIndex[T]":
+    def index(self, index_expr: str) -> "NonIndex[T]":
         if index_expr not in self._indices:
-            self._indices[index_expr] = NoIndex(self, self.schema, index_expr)
+            self._indices[index_expr] = NonIndex(self, self.schema, index_expr)
         return self._indices[index_expr]
 
     def stat(self) -> dict:

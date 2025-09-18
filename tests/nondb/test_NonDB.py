@@ -5,8 +5,8 @@ from unittest import TestCase
 
 from pydantic import BaseModel
 
-from src.nondb.NoDB import NoDB
-from src.nondb.NoTable import NoTable
+from src.nondb.NonDB import NonDB
+from src.nondb.NonTable import NonTable
 
 
 class TestModel(BaseModel):
@@ -25,7 +25,7 @@ class TestNoDB(TestCase):
         """Set up a temporary directory for each test."""
         self.temp_dir = tempfile.mkdtemp()
         self.db_path = Path(self.temp_dir) / "test_db"
-        self.db = NoDB(str(self.db_path))
+        self.db = NonDB(str(self.db_path))
 
     def tearDown(self):
         """Clean up after each test."""
@@ -40,7 +40,7 @@ class TestNoDB(TestCase):
 
         # Test with different path
         other_path = Path(self.temp_dir) / "other_db"
-        other_db = NoDB(str(other_path))
+        other_db = NonDB(str(other_path))
         self.assertEqual(str(other_db.storage.path), str(other_path))
 
     def test_table_creation(self):
@@ -48,7 +48,7 @@ class TestNoDB(TestCase):
         # Test creating a table with default key expression
         table = self.db.table(TestModel)
 
-        self.assertIsInstance(table, NoTable)
+        self.assertIsInstance(table, NonTable)
         self.assertEqual(table.schema, TestModel)
         self.assertEqual(table.key_expr, "id")
         self.assertIn("TestModel", self.db.tables)
@@ -176,7 +176,7 @@ class TestNoDB(TestCase):
         table.save(test_record)
 
         # Create new NoDB instance with same path
-        new_db = NoDB(str(self.db_path))
+        new_db = NonDB(str(self.db_path))
         new_table = new_db.table(TestModel)
 
         # Verify data persists
@@ -192,7 +192,7 @@ class TestNoDB(TestCase):
         table.save(test_record)
 
         # Create new NoDB instance and recreate table reference
-        new_db = NoDB(str(self.db_path))
+        new_db = NonDB(str(self.db_path))
         new_table = new_db.table(TestModel)
 
         # Verify data exists
