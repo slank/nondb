@@ -1,6 +1,6 @@
 [project]
 name = "nondb"
-version = "0.1.0"
+version = "0.1.3"
 description = "A document store for Pydantic models"
 authors = [
     {name = "slank",email = "slank@smacky.org"}
