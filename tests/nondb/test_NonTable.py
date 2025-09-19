@@ -5,7 +5,7 @@ from unittest import TestCase
 
 from pydantic import BaseModel
 
-from src.nondb.NoTable import NoTable
+from src.nondb.NonTable import NonTable
 from src.nondb.Storage import Storage
 
 
@@ -28,7 +28,7 @@ class TestNoTable(TestCase):
         self.temp_dir = tempfile.mkdtemp()
         self.storage_path = Path(self.temp_dir) / "test_storage"
         self.storage = Storage(self.storage_path)
-        self.table = NoTable(self.storage, TestModel, "id")
+        self.table = NonTable(self.storage, TestModel, "id")
 
     def tearDown(self):
         """Clean up after each test."""
@@ -47,7 +47,7 @@ class TestNoTable(TestCase):
         self.assertEqual(self.table.key_expr, "id")
 
         # Test with different expression
-        table2 = NoTable(self.storage, TestModel, "name")
+        table2 = NonTable(self.storage, TestModel, "name")
         self.assertEqual(table2.key_expr, "name")
 
     def test_storage_property(self):
@@ -62,7 +62,7 @@ class TestNoTable(TestCase):
         self.assertEqual(key, 123)
 
         # Test with string key
-        person_table = NoTable(self.storage, PersonModel, "id")
+        person_table = NonTable(self.storage, PersonModel, "id")
         person_record = PersonModel(
             id="abc123", first_name="Jane", last_name="Smith", age=30
         )
@@ -70,7 +70,7 @@ class TestNoTable(TestCase):
         self.assertEqual(person_key, "abc123")
 
         # Test with nested key expression
-        nested_table = NoTable(self.storage, PersonModel, "first_name")
+        nested_table = NonTable(self.storage, PersonModel, "first_name")
         nested_key = nested_table.key_for(person_record)
         self.assertEqual(nested_key, "Jane")
 
@@ -240,7 +240,7 @@ class TestNoTable(TestCase):
     def test_different_key_expressions(self):
         """Test NoTable with different key expressions."""
         # Test with string key
-        person_table = NoTable(self.storage, PersonModel, "id")
+        person_table = NonTable(self.storage, PersonModel, "id")
         person = PersonModel(id="person123", first_name="John", last_name="Doe", age=25)
 
         person_table.save(person)
@@ -248,7 +248,7 @@ class TestNoTable(TestCase):
         self.assertEqual(fetched_person.id, "person123")
 
         # Test with different field as key
-        name_table = NoTable(self.storage, PersonModel, "first_name")
+        name_table = NonTable(self.storage, PersonModel, "first_name")
         name_table.save(person)
         fetched_by_name = name_table.fetch("John")
         self.assertEqual(fetched_by_name.first_name, "John")

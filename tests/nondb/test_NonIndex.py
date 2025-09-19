@@ -5,8 +5,8 @@ from unittest import TestCase
 
 from pydantic import BaseModel
 
-from src.nondb.NoIndex import NoIndex
-from src.nondb.NoTable import NoTable
+from src.nondb.NonIndex import NonIndex
+from src.nondb.NonTable import NonTable
 from src.nondb.Storage import Storage
 
 
@@ -22,7 +22,7 @@ class TestNoIndex(TestCase):
         self.temp_dir = tempfile.mkdtemp()
         self.storage_path = Path(self.temp_dir) / "test_storage"
         self.storage = Storage(self.storage_path)
-        self.table = NoTable(self.storage, TestModel, "id")
+        self.table = NonTable(self.storage, TestModel, "id")
 
         # Add test records
         self.record1 = TestModel(id=1, name="Alice", category="admin")
@@ -33,7 +33,7 @@ class TestNoIndex(TestCase):
         self.table.save(self.record2)
         self.table.save(self.record3)
 
-        self.index = NoIndex(self.table, TestModel, "category")
+        self.index = NonIndex(self.table, TestModel, "category")
 
     def tearDown(self):
         """Clean up after each test."""
@@ -42,7 +42,7 @@ class TestNoIndex(TestCase):
 
     def test_init(self):
         """Test NoIndex initialization."""
-        index = NoIndex(self.table, TestModel, "category")
+        index = NonIndex(self.table, TestModel, "category")
 
         self.assertEqual(index.table, self.table)
         self.assertEqual(index.schema, TestModel)
@@ -158,7 +158,7 @@ class TestNoIndex(TestCase):
     def test_vacuum_removes_empty_directories(self):
         """Test that vacuum removes empty directories after cleaning broken symlinks."""
         # Create index with single record
-        single_index = NoIndex(self.table, TestModel, "name")
+        single_index = NonIndex(self.table, TestModel, "name")
         single_index.put(self.record1)
 
         # Break the symlink
@@ -186,12 +186,12 @@ class TestNoIndex(TestCase):
     def test_key_for_with_different_index_expression(self):
         """Test key_for with different index expressions."""
         # Create index on 'name' field
-        name_index = NoIndex(self.table, TestModel, "name")
+        name_index = NonIndex(self.table, TestModel, "name")
         self.assertEqual(name_index.key_for(self.record1), "Alice")
         self.assertEqual(name_index.key_for(self.record2), "Bob")
 
         # Create index on 'id' field
-        id_index = NoIndex(self.table, TestModel, "id")
+        id_index = NonIndex(self.table, TestModel, "id")
         self.assertEqual(id_index.key_for(self.record1), 1)
         self.assertEqual(id_index.key_for(self.record2), 2)
 
