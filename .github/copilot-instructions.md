@@ -39,14 +39,14 @@ NonDB is a Python library that provides a filesystem-based JSON document store f
    ```python
    cd /home/runner/work/nondb/nondb
    PYTHONPATH=./src python3 -c "
-   from nondb import NoDB
+   from nondb import NonDB
    from pydantic import BaseModel
    
    class TestModel(BaseModel):
        id: int
        name: str
    
-   db = NoDB('/tmp/test_db')
+   db = NonDB('/tmp/test_db')
    table = db.table(TestModel)
    record = TestModel(id=1, name='Test')
    table.save(record)
@@ -75,7 +75,7 @@ NonDB is a Python library that provides a filesystem-based JSON document store f
 3. **Index Functionality Test**:
    ```python
    PYTHONPATH=./src python3 -c "
-   from nondb import NoDB
+   from nondb import NonDB
    from pydantic import BaseModel
    
    class User(BaseModel):
@@ -83,7 +83,7 @@ NonDB is a Python library that provides a filesystem-based JSON document store f
        name: str
        category: str
    
-   db = NoDB('/tmp/test_index_db')
+   db = NonDB('/tmp/test_index_db')
    table = db.table(User)
    
    # Save test data
@@ -107,18 +107,18 @@ NonDB is a Python library that provides a filesystem-based JSON document store f
 
 ### Core Components
 - `src/nondb/` - Main library code
-  - `NoDB.py` - Main database class for managing tables
-  - `NoTable.py` - Table implementation for storing Pydantic models
-  - `NoIndex.py` - Indexing system using filesystem symlinks
+  - `NonDB.py` - Main database class for managing tables
+  - `NonTable.py` - Table implementation for storing Pydantic models
+  - `NonIndex.py` - Indexing system using filesystem symlinks
   - `Storage.py` - Low-level filesystem storage abstraction
 - `tests/nondb/` - Comprehensive test suite (54 tests with 100% coverage on core modules)
 - `examples/proto.py` - NiceGUI web application example demonstrating library usage
 
 ### Key Areas for Development Work
 - **Storage System**: `Storage.py` handles file-based persistence with JSON serialization
-- **Table Operations**: `NoTable.py` manages CRUD operations and integrates with indexing
-- **Indexing**: `NoIndex.py` uses filesystem symlinks for efficient lookups
-- **Database Interface**: `NoDB.py` provides the main API for creating and managing tables
+- **Table Operations**: `NonTable.py` manages CRUD operations and integrates with indexing
+- **Indexing**: `NonIndex.py` uses filesystem symlinks for efficient lookups
+- **Database Interface**: `NonDB.py` provides the main API for creating and managing tables
 
 ### Common Development Patterns
 - All models inherit from Pydantic's `BaseModel`
