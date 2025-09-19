@@ -16,16 +16,13 @@ import traceback
 
 from pydantic import BaseModel
 
-import nondb  # noqa # pylint: disable=unused-import
-from nondb import NonDB
-from nondb.NonIndex import NonIndex  # noqa # pylint: disable=unused-import
-from nondb.NonTable import NonTable  # noqa # pylint: disable=unused-import
-from nondb.Storage import Storage  # noqa # pylint: disable=unused-import
-
 
 def test_basic_import():
     """Test that NonDB can be imported."""
     try:
+        import nondb  # noqa # pylint: disable=unused-import
+        from nondb import NonDB  # noqa # pylint: disable=unused-import
+
         print("✓ NonDB module imported successfully")
         return True
     except ImportError as e:
@@ -36,6 +33,10 @@ def test_basic_import():
 def test_core_classes():
     """Test that core classes can be imported and instantiated."""
     try:
+        from nondb.NonIndex import NonIndex  # noqa # pylint: disable=unused-import
+        from nondb.NonTable import NonTable  # noqa # pylint: disable=unused-import
+        from nondb.Storage import Storage  # noqa # pylint: disable=unused-import
+
         print("✓ Core classes imported successfully")
         return True
     except ImportError as e:
@@ -45,6 +46,8 @@ def test_core_classes():
 
 def test_basic_functionality():
     """Test basic NonDB functionality."""
+    from nondb import NonDB
+
     try:
 
         # Define a test model
@@ -76,6 +79,8 @@ def test_basic_functionality():
 
 def test_indexing():
     """Test indexing functionality."""
+    from nondb import NonDB
+
     try:
 
         class User(BaseModel):
