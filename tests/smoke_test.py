@@ -81,7 +81,6 @@ def test_indexing():
     from nondb import NonDB
 
     try:
-
         class User(BaseModel):
             id: int
             name: str
