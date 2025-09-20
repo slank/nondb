@@ -49,7 +49,6 @@ def test_basic_functionality():
     from nondb import NonDB
 
     try:
-
         # Define a test model
         class TestModel(BaseModel):
             id: int
